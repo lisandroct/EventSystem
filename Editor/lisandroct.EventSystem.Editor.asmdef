@@ -1,0 +1,18 @@
+{
+    "name": "lisandroct.EventSystem.Editor",
+    "references": [
+        "GUID:c1e07239ac5773c49a68b1dc58a059d3",
+        "GUID:97b63552e58bf814e848b1b2ddc1d754"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

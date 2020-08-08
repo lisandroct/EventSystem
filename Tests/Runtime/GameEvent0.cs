@@ -2,22 +2,23 @@
 using UnityEngine;
 using lisandroct.EventSystem;
 using NSubstitute;
+using Event = lisandroct.EventSystem.Event;
 
 namespace Given_GameEvent0
 {
     public class Given {
-        protected GameEvent gameEvent { get; set; }
+        protected Event Event { get; set; }
 
         [SetUp]
         public virtual void SetUp() {
-            gameEvent = ScriptableObject.CreateInstance<GameEvent>();
+            Event = ScriptableObject.CreateInstance<Event>();
         }
     }
 
     public class When_Created : Given {
         [Test]
         public void Then_HasNoListeners() {
-            Assert.AreEqual(0, gameEvent.ListenersCount);
+            Assert.AreEqual(0, Event.ListenersCount);
         }
     }
 
@@ -25,12 +26,12 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            gameEvent.RegisterListener(Substitute.For<IGameEventListener>());
+            Event.RegisterListener(Substitute.For<IListener>());
         }
 
         [Test]
         public void Then_HasOneListener() {
-            Assert.AreEqual(1, gameEvent.ListenersCount);
+            Assert.AreEqual(1, Event.ListenersCount);
         }
     }
 
@@ -38,14 +39,14 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            IGameEventListener listener = Substitute.For<IGameEventListener>();
-            gameEvent.RegisterListener(listener);
-            gameEvent.RegisterListener(listener);
+            IListener listener = Substitute.For<IListener>();
+            Event.RegisterListener(listener);
+            Event.RegisterListener(listener);
         }
 
         [Test]
         public void Then_HasOneListener() {
-            Assert.AreEqual(1, gameEvent.ListenersCount);
+            Assert.AreEqual(1, Event.ListenersCount);
         }
     }
 
@@ -53,14 +54,14 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            IGameEventListener listener = Substitute.For<IGameEventListener>();
-            gameEvent.RegisterListener(listener);
-            gameEvent.UnregisterListener(listener);
+            IListener listener = Substitute.For<IListener>();
+            Event.RegisterListener(listener);
+            Event.UnregisterListener(listener);
         }
 
         [Test]
         public void Then_HasNoListener() {
-            Assert.AreEqual(0, gameEvent.ListenersCount);
+            Assert.AreEqual(0, Event.ListenersCount);
         }
     }
 
@@ -69,13 +70,13 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            gameEvent.RegisterListener(Substitute.For<IGameEventListener>());
-            gameEvent.RegisterListener(Substitute.For<IGameEventListener>());
+            Event.RegisterListener(Substitute.For<IListener>());
+            Event.RegisterListener(Substitute.For<IListener>());
         }
 
         [Test]
         public void Then_HasTwoListeners() {
-            Assert.AreEqual(2, gameEvent.ListenersCount);
+            Assert.AreEqual(2, Event.ListenersCount);
         }
     }
 }
@@ -84,20 +85,20 @@ namespace Given_GameEvent0.Given_ThreeListenersRegistered
 {
     public class Given : Given_GameEvent0.Given
     {
-        protected IGameEventListener listener0 { get; set; }
-        protected IGameEventListener listener1 { get; set; }
-        protected IGameEventListener listener2 { get; set; }
+        protected IListener listener0 { get; set; }
+        protected IListener listener1 { get; set; }
+        protected IListener listener2 { get; set; }
 
         public override void SetUp() {
             base.SetUp();
             
-            listener0 = Substitute.For<IGameEventListener>();
-            listener1 = Substitute.For<IGameEventListener>();
-            listener2 = Substitute.For<IGameEventListener>();
+            listener0 = Substitute.For<IListener>();
+            listener1 = Substitute.For<IListener>();
+            listener2 = Substitute.For<IListener>();
             
-            gameEvent.RegisterListener(listener0);
-            gameEvent.RegisterListener(listener1);
-            gameEvent.RegisterListener(listener2);
+            Event.RegisterListener(listener0);
+            Event.RegisterListener(listener1);
+            Event.RegisterListener(listener2);
         }
     }
 
@@ -106,7 +107,7 @@ namespace Given_GameEvent0.Given_ThreeListenersRegistered
         public override void SetUp() {
             base.SetUp();
 
-            gameEvent.Raise();
+            Event.Raise();
         }
 
         [Test]
