@@ -21,23 +21,22 @@ namespace lisandroct.EventSystem
             ListenersPath = listenersPath;
         }
         
-        public void Generate(params Type[] types)
+        public void Generate(string name, params Type[] types)
         {
             if (types.Length > 4)
             {
                 throw new ArgumentException("More than 4 generic arguments are not allowed");
             }
             
-            var eventUnit = GenerateEvent(types);
-            var listenerUnit = GenerateListener(types);
+            var eventUnit = GenerateEvent(name, types);
+            var listenerUnit = GenerateListener(name, types);
 
             GenerateCsFile(EventsPath, eventUnit);
             GenerateCsFile(ListenersPath, listenerUnit);
         }
         
-        private static CodeCompileUnit GenerateEvent(Type[] types)
+        private static CodeCompileUnit GenerateEvent(string name, Type[] types)
         {
-            var name = ConcatenateTypeNames(types);
             var className = $"{name}Event";
             
             var compileUnit = CreateCompileUnit();
@@ -49,9 +48,8 @@ namespace lisandroct.EventSystem
             return compileUnit;
         }
 
-        private static CodeCompileUnit GenerateListener(Type[] types)
+        private static CodeCompileUnit GenerateListener(string name, Type[] types)
         {
-            var name = ConcatenateTypeNames(types);
             var className = $"{name}Listener";
 
             var compileUnit = CreateCompileUnit();
@@ -66,7 +64,7 @@ namespace lisandroct.EventSystem
 
         private static CodeNamespace AddNamespace(CodeCompileUnit compileUnit)
         {
-            var codeNamespace = new CodeNamespace("lisandroct.EventSystem");
+            var codeNamespace = new CodeNamespace("lisandroct.EventSystem.Events");
             compileUnit.Namespaces.Add(codeNamespace);
 
             return codeNamespace;
@@ -100,17 +98,6 @@ namespace lisandroct.EventSystem
             }
             
             codeClass.CustomAttributes.Add(createAssetMenuAnnotation);
-        }
-
-        private static string ConcatenateTypeNames(IEnumerable<Type> types)
-        {
-            var builder = new StringBuilder();
-            foreach (var type in types)
-            {
-                builder.Append(type.GetFriendlyName());
-            }
-
-            return builder.ToString();
         }
 
         private static void GenerateCsFile(string folder, CodeCompileUnit compileUnit)

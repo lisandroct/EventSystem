@@ -11,93 +11,93 @@ namespace lisandroct.EventSystem
 
     public abstract class Listener<T> : MonoBehaviour, IListener<T> 
     {
-        [FormerlySerializedAs("_gameEvent")] [FormerlySerializedAs("m_Event")] [SerializeField]
-        private Event<T> @event;
-        private Event<T> Event => @event;
+        [SerializeField]
+        private Event<T> _event;
+        private Event<T> Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent<T> _response;
         private UnityEvent<T> response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
         public void OnEventRaised(T element) {
-            response.Invoke(element);
+            response?.Invoke(element);
         }
     }
 
     public abstract class Listener<T0, T1> : MonoBehaviour, IListener<T0, T1>
     {
-        [FormerlySerializedAs("m_Event")] [SerializeField]
+        [SerializeField]
         private Event<T0, T1> _event;
         private Event<T0, T1> Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent<T0, T1> _response;
         private UnityEvent<T0, T1> response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
         public void OnEventRaised(T0 element0, T1 element1) {
-            response.Invoke(element0, element1);
+            response?.Invoke(element0, element1);
         }
     }
 
     public abstract class Listener<T0, T1, T2> : MonoBehaviour, IListener<T0, T1, T2>
     {
-        [FormerlySerializedAs("_gameEevent")] [FormerlySerializedAs("m_Event")] [SerializeField]
-        private Event<T0, T1, T2> eevent;
-        private Event<T0, T1, T2> Event => eevent;
+        [SerializeField]
+        private Event<T0, T1, T2> _event;
+        private Event<T0, T1, T2> Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent<T0, T1, T2> _response;
         private UnityEvent<T0, T1, T2> response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
         public void OnEventRaised(T0 element0, T1 element1, T2 element2) {
-            response.Invoke(element0, element1, element2);
+            response?.Invoke(element0, element1, element2);
         }
     }
 
     public abstract class Listener<T0, T1, T2, T3> : MonoBehaviour, IListener<T0, T1, T2, T3>
     {
-        [FormerlySerializedAs("_gameEvent")] [FormerlySerializedAs("m_Event")] [SerializeField]
-        private Event<T0, T1, T2, T3> @event;
-        private Event<T0, T1, T2, T3> Event => @event;
+        [SerializeField]
+        private Event<T0, T1, T2, T3> _event;
+        private Event<T0, T1, T2, T3> Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent<T0, T1, T2, T3> _response;
         private UnityEvent<T0, T1, T2, T3> response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
         public void OnEventRaised(T0 element0, T1 element1, T2 element2, T3 element3) {
-            response.Invoke(element0, element1, element2, element3);
+            response?.Invoke(element0, element1, element2, element3);
         }
     }
 }

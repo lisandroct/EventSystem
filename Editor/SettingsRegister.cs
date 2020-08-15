@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using lisandroct.Core.Editor;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -16,7 +17,7 @@ namespace lisandroct.EventSystem
         private static string LibraryPath => $"{CoreFolders.CorePath}/{Library}";
         private static string EventsPath => $"{LibraryPath}/{Events}";
         private static string ListenersPath => $"{LibraryPath}/{Listeners}";
-        
+
         [SettingsProvider]
         public static SettingsProvider CreateProvider()
         {
@@ -27,13 +28,16 @@ namespace lisandroct.EventSystem
             string namespaceFilter = null;
             string classFilter = null;
 
+            string newName = null;
+            var newTypes = new List<Type>();
+
             IEnumerable<Type> types = null;
             IEnumerable<Type> filteredTypes = null;
             
             var serializedObject = Settings.GetSerializedObject();
 
             var settings = serializedObject.targetObject as Settings;
-            
+
             var provider = new SettingsProvider("Project/EventSystem", SettingsScope.Project)
             {
                 label = "EventSystem",
@@ -42,7 +46,7 @@ namespace lisandroct.EventSystem
                     serializedObject.Update();
                     
                     EditorGUI.BeginChangeCheck();
-                    tabIndex = GUILayout.Toolbar(tabIndex, new [] { "Events", "Add New Events" });
+                    tabIndex = GUILayout.Toolbar(tabIndex, new [] { "Event Types", "Add New" });
                     if (EditorGUI.EndChangeCheck())
                     {
                         scrollPosition = Vector2.zero;
@@ -60,25 +64,14 @@ namespace lisandroct.EventSystem
                     switch (tabIndex) {
                         case 0:
                         {
-                            string currentNamespace = null;
                             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                            if (settings.Types != null)
+                            for (int i = 0, n = settings.Definitions.Count; i < n; i++)
                             {
-                                foreach (var sType in settings.Types)
-                                {
-                                    var type = sType.Type;
-                                    if (currentNamespace != type.Namespace)
-                                    {
-                                        currentNamespace = type.Namespace;
-                                        EditorGUILayout.LabelField(currentNamespace, EditorStyles.boldLabel);
-                                    }
-
-                                    var toggle = EditorGUILayout.ToggleLeft(type.GetFriendlyName(), true);
-                                    if (!toggle)
-                                    {
-                                        settings.RemoveType(type);
-                                        break;
-                                    }
+                                var definition = settings.Definitions[i];
+                                    
+                                if(!EditorGUILayout.ToggleLeft(definition.ToString(), true)) {
+                                    settings.Definitions.RemoveAt(i);
+                                    break;
                                 }
                             }
 
@@ -88,12 +81,11 @@ namespace lisandroct.EventSystem
                             {
                                 CreateFolders();
 
-                                if (settings.Types != null)
+                                if (settings.Definitions != null)
                                 {
-                                    foreach (var sType in settings.Types)
+                                    foreach (var definition in settings.Definitions)
                                     {
-                                        var type = sType.Type;
-                                        generator.Generate(type);
+                                        generator.Generate(definition.Name, definition.GetTypes());
                                     }
                                 }
                                 
@@ -105,42 +97,71 @@ namespace lisandroct.EventSystem
                         }
                         case 1:
                         {
-                            EditorGUI.BeginChangeCheck();
-                            namespaceFilter = EditorGUILayout.TextField("Namespace", namespaceFilter);
-                            classFilter = EditorGUILayout.TextField("Class Name", classFilter);
-                            if(EditorGUI.EndChangeCheck())
+                            if (newTypes.Count > 0)
                             {
-                                filteredTypes = FilterTypes(types, classFilter, namespaceFilter);
-                            }
-
-                            if (filteredTypes != null)
-                            {
-                                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                                string currentNamespace = null;
-                                foreach (var type in filteredTypes)
+                                EditorGUI.BeginChangeCheck();
+                                var targetName = EditorGUILayout.TextField("Name",
+                                    string.IsNullOrEmpty(newName) ? ConcatenateTypeNames(newTypes) : newName);
+                                if (EditorGUI.EndChangeCheck())
                                 {
-                                    if (currentNamespace != type.Namespace)
-                                    {
-                                        currentNamespace = type.Namespace;
-                                        EditorGUILayout.LabelField(currentNamespace, EditorStyles.boldLabel);
-                                    }
-
-                                    EditorGUI.BeginChangeCheck();
-                                    var toggle = EditorGUILayout.ToggleLeft(type.GetFriendlyName(), settings.IsSet(type));
-                                    if (EditorGUI.EndChangeCheck())
-                                    {
-                                        if (toggle)
-                                        {
-                                            settings.AddType(type);
-                                        }
-                                        else
-                                        {
-                                            settings.RemoveType(type);
-                                        }
-                                    }
+                                    newName = targetName;
                                 }
 
-                                EditorGUILayout.EndScrollView();
+                                GUILayout.BeginHorizontal();
+                                for (int i = 0, n = newTypes.Count; i < n; i++)
+                                {
+                                    var type = newTypes[i];
+                                    if (!GUILayout.Toggle(true, type.GetFriendlyName(), EditorStyles.miniButton))
+                                    {
+                                        newTypes.RemoveAt(i);
+                                        break;
+                                    }
+                                }
+                                GUILayout.FlexibleSpace();
+                                GUILayout.EndHorizontal();
+                                
+                                if (GUILayout.Button("Add Event Type"))
+                                {
+                                    var newDefinition = new EventDefinition(targetName, newTypes.ToArray());
+                                    settings.Definitions.Add(newDefinition);
+                                    
+                                    newName = null;
+                                    newTypes.Clear();
+                                }
+                            }
+
+                            if (newTypes.Count < 4)
+                            {
+                                EditorGUILayout.Space();
+                                EditorGUILayout.LabelField("Search types", EditorStyles.boldLabel);
+                                EditorGUI.BeginChangeCheck();
+                                namespaceFilter = EditorGUILayout.TextField("Namespace", namespaceFilter);
+                                classFilter = EditorGUILayout.TextField("Class Name", classFilter);
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    filteredTypes = FilterTypes(types, classFilter, namespaceFilter);
+                                }
+
+                                if (filteredTypes != null)
+                                {
+                                    scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+                                    string currentNamespace = null;
+                                    foreach (var type in filteredTypes)
+                                    {
+                                        if (currentNamespace != type.Namespace)
+                                        {
+                                            currentNamespace = type.Namespace;
+                                            EditorGUILayout.LabelField(currentNamespace, EditorStyles.boldLabel);
+                                        }
+
+                                        if (GUILayout.Button(type.GetFriendlyName()))
+                                        {
+                                            newTypes.Add(type);
+                                        }
+                                    }
+
+                                    EditorGUILayout.EndScrollView();
+                                }
                             }
 
                             break;
@@ -241,6 +262,17 @@ namespace lisandroct.EventSystem
             
             var typeObject = typeof(UnityEngine.Object);
             return typeObject.IsAssignableFrom(type) || type.IsSerializable;
+        }
+
+        private static string ConcatenateTypeNames(IEnumerable<Type> types)
+        {
+            var builder = new StringBuilder();
+            foreach (var type in types)
+            {
+                builder.Append(type.GetFriendlyName());
+            }
+
+            return builder.ToString();
         }
     }
 }
