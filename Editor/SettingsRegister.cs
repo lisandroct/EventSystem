@@ -224,7 +224,7 @@ namespace lisandroct.EventSystem
             return AppDomain.CurrentDomain.GetAssemblies()
                 .Where(assembly => assembly.IsDynamic || assemblies.Contains(assembly.Location.Split('\\').Last()))
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(IsSerializable)
+                .Where(IsNotGeneric)
                 .OrderBy(type => type.Namespace)
                 .ThenBy(type => type.GetFriendlyName())
                 .ToArray();
@@ -254,30 +254,8 @@ namespace lisandroct.EventSystem
 
             });
         }
-        
-        private static bool IsSerializable(Type type)
-        {
-            if (type.IsAbstract)
-            {
-                return false;
-            }
-            
-            if (type.IsGenericType)
-            {
-                if (type.GetGenericArguments().Any(genericArgument => !IsSerializable(genericArgument)))
-                {
-                    return false;
-                }
-            }
 
-            if (type.IsPrimitive || type.IsEnum || type.IsValueType)
-            {
-                return true;
-            }
-            
-            var typeObject = typeof(UnityEngine.Object);
-            return typeObject.IsAssignableFrom(type) || type.IsSerializable;
-        }
+        private static bool IsNotGeneric(Type type) => !type.IsGenericType;
 
         private static string ConcatenateTypeNames(IEnumerable<Type> types)
         {

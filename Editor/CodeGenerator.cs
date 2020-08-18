@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.CSharp;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace lisandroct.EventSystem
 {
@@ -56,46 +57,60 @@ namespace lisandroct.EventSystem
         
         private static CodeCompileUnit GenerateEventInspector(string name, Type[] types)
         {
-            var testObjectClassName = $"{name}Test";
             var inspectorClassName = $"{name}Inspector";
+            var testObjectClassName = $"{name}Test";
             
             var compileUnit = CreateCompileUnit();
             var codeNamespace = AddNamespace(compileUnit);
 
-            var codeTestObjectClass = AddClass(testObjectClassName, codeNamespace);
+            var inspectorCodeClass = AddClass(inspectorClassName, codeNamespace);
+            var inspectorBaseClass = AddParentType(inspectorCodeClass, typeof(EventInspector), types);
+            AddGenerics(inspectorBaseClass, testObjectClassName);
+            AddAnnotationWithType(typeof(CustomEditor), inspectorCodeClass, $"{name}Event");
+
+            var testObjectCodeClass = AddClass(testObjectClassName, codeNamespace);
             switch (types.Length)
             {
                 case 1:
-                    AddParentType(codeTestObjectClass, typeof(TestObject<>), types);
+                    AddParentType(testObjectCodeClass, typeof(TestObject<>), types);
                     break;
                 case 2:
-                    AddParentType(codeTestObjectClass, typeof(TestObject<,>), types);
+                    AddParentType(testObjectCodeClass, typeof(TestObject<,>), types);
                     break;
                 case 3:
-                    AddParentType(codeTestObjectClass, typeof(TestObject<,,>), types);
+                    AddParentType(testObjectCodeClass, typeof(TestObject<,,>), types);
                     break;
                 case 4:
-                    AddParentType(codeTestObjectClass, typeof(TestObject<,,,>), types);
+                    AddParentType(testObjectCodeClass, typeof(TestObject<,,,>), types);
                     break;
             }
-
-            var codeInspectorClass = AddClass(inspectorClassName, codeNamespace);
-            var inspectorBaseClass = AddParentType(codeInspectorClass, typeof(EventInspector), types);
-            AddGenerics(inspectorBaseClass, testObjectClassName);
-            AddAnnotationWithType(typeof(CustomEditor), codeInspectorClass, $"{name}Event");
             
             return compileUnit;
         }
 
         private static CodeCompileUnit GenerateListener(string name, Type[] types)
         {
-            var className = $"{name}Listener";
-
             var compileUnit = CreateCompileUnit();
             var codeNamespace = AddNamespace(compileUnit);
+            
+            #if UNITY_2020_1_OR_NEWER
+            var className = $"{name}Listener";
+
             var codeClass = AddClass(className, codeNamespace);
             AddParentType(codeClass, typeof(Listener), types);
-            
+            #else
+            var listenerClassName = $"{name}Listener";
+            var responseClassName = $"{name}Response";
+
+            var listenerCodeClass = AddClass(listenerClassName, codeNamespace);
+            var listenerBaseClass = AddParentType(listenerCodeClass, typeof(Listener), types);
+            AddGenerics(listenerBaseClass, $"{name}Event", responseClassName);
+
+            var responseCodeClass = AddClass(responseClassName, codeNamespace);
+            AddParentType(responseCodeClass, typeof(UnityEvent), types);
+            AddAnnotation(typeof(SerializableAttribute), responseCodeClass);
+            #endif
+
             return compileUnit;
         }
 
@@ -153,7 +168,7 @@ namespace lisandroct.EventSystem
             }
         }
 
-        private static void AddAnnotation(Type type, CodeTypeDeclaration codeClass, params (string, string)[] arguments)
+        private static void AddAnnotation(Type type, CodeTypeMember codeMember, params (string, string)[] arguments)
         {
             var annotation = new CodeAttributeDeclaration(new CodeTypeReference(type));
             foreach (var (name, value) in arguments)
@@ -161,7 +176,7 @@ namespace lisandroct.EventSystem
                 annotation.Arguments.Add(new CodeAttributeArgument(name, new CodePrimitiveExpression(value)));
             }
             
-            codeClass.CustomAttributes.Add(annotation);
+            codeMember.CustomAttributes.Add(annotation);
         }
 
         private static void AddAnnotationWithType(Type type, CodeTypeDeclaration codeClass, string typeArgument)
