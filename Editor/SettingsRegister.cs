@@ -12,10 +12,12 @@ namespace lisandroct.EventSystem
     public class SettingsRegister {
         private const string Library = "EventSystem";
         private const string Events = "Events";
+        private const string Editor = "Editor";
         private const string Listeners = "Listeners";
         
         private static string LibraryPath => $"{CoreFolders.CorePath}/{Library}";
         private static string EventsPath => $"{LibraryPath}/{Events}";
+        private static string EventsInspectorsPath => $"{EventsPath}/{Editor}";
         private static string ListenersPath => $"{LibraryPath}/{Listeners}";
 
         [SettingsProvider]
@@ -23,7 +25,7 @@ namespace lisandroct.EventSystem
         {
             var tabIndex = 0;
             var scrollPosition = Vector2.zero;
-            var generator = new CodeGenerator(EventsPath, ListenersPath);
+            var generator = new CodeGenerator(EventsPath, EventsInspectorsPath, ListenersPath);
 
             string namespaceFilter = null;
             string classFilter = null;
@@ -195,8 +197,21 @@ namespace lisandroct.EventSystem
                 FileUtil.DeleteFileOrDirectory(ListenersPath);
             }
             
-            AssetDatabase.CreateFolder(LibraryPath, Events);
-            AssetDatabase.CreateFolder(LibraryPath, Listeners);
+            AssetDatabase.Refresh();
+            
+            if (!AssetDatabase.IsValidFolder(EventsPath))
+            {
+                AssetDatabase.CreateFolder(LibraryPath, Events);
+            }
+            if (!AssetDatabase.IsValidFolder(ListenersPath))
+            {
+                AssetDatabase.CreateFolder(LibraryPath, Listeners);
+            }
+            
+            if (!AssetDatabase.IsValidFolder(EventsInspectorsPath))
+            {
+                AssetDatabase.CreateFolder(EventsPath, Editor);
+            }
         }
 
         private static IEnumerable<Type> LoadTypes()

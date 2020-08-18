@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace lisandroct.EventSystem
@@ -13,7 +14,7 @@ namespace lisandroct.EventSystem
                 listeners[i].OnEventRaised(element);
             }
         }
-
+        
         public void RegisterListener(IListener<T> listener) {
             if(listeners.Contains(listener)) {
                 return;
