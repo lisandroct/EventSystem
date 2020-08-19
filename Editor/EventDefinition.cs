@@ -17,13 +17,6 @@ namespace lisandroct.EventSystem
         private SerializableType[] _types;
         private SerializableType[] Types => _types; 
 
-        public EventDefinition(string name, params Type[] types)
-        {
-            _name = name;
-
-            _types = types.Select(type => new SerializableType(type)).ToArray();
-        }
-
         public Type[] GetTypes() => Types.Select(type => type.Type).ToArray();
 
         public bool IsValid => Types.All(serializedType => serializedType.Type != null);

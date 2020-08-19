@@ -37,6 +37,7 @@ namespace lisandroct.EventSystem
             IEnumerable<Type> filteredTypes = null;
             
             var serializedObject = Settings.GetSerializedObject();
+            var definitionsProperty = serializedObject.FindProperty("definitions");
 
             var settings = serializedObject.targetObject as Settings;
 
@@ -67,7 +68,7 @@ namespace lisandroct.EventSystem
                         case 0:
                         {
                             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                            for (int i = 0, n = settings.Definitions.Count; i < n; i++)
+                            for (int i = 0, n = definitionsProperty.arraySize; i < n; i++)
                             {
                                 var definition = settings.Definitions[i];
 
@@ -77,7 +78,7 @@ namespace lisandroct.EventSystem
                                 }
                                     
                                 if(!EditorGUILayout.ToggleLeft(definition.ToString(), true)) {
-                                    settings.Definitions.RemoveAt(i);
+                                    definitionsProperty.DeleteArrayElementAtIndex(i);
                                     break;
                                 }
                             }
@@ -133,8 +134,30 @@ namespace lisandroct.EventSystem
                                 
                                 if (GUILayout.Button("Add Event Type"))
                                 {
-                                    var newDefinition = new EventDefinition(targetName, newTypes.ToArray());
-                                    settings.Definitions.Add(newDefinition);
+                                    //var newDefinition = new EventDefinition(targetName, newTypes.ToArray());
+                                    var index = definitionsProperty.arraySize;
+                                    definitionsProperty.InsertArrayElementAtIndex(index);
+                                    var newElement = definitionsProperty.GetArrayElementAtIndex(index);
+                                    
+                                    var nameProperty = newElement.FindPropertyRelative("_name");
+                                    nameProperty.stringValue = targetName;
+                                    
+                                    var typesProperty = newElement.FindPropertyRelative("_types");
+                                    typesProperty.ClearArray();
+                                    for(int i = 0, n = newTypes.Count; i < n; i++)
+                                    {
+                                        var data = new SerializableType(newTypes[i]).GetData();
+                                        
+                                        typesProperty.InsertArrayElementAtIndex(i);
+                                        var newType = typesProperty.GetArrayElementAtIndex(i);
+                                        var dataProperty = newType.FindPropertyRelative("data");
+                                        dataProperty.ClearArray();
+                                        for(int j = 0, m = data.Length; j < m; j++)
+                                        {
+                                            dataProperty.InsertArrayElementAtIndex(j);
+                                            dataProperty.GetArrayElementAtIndex(j).intValue = data[j];
+                                        }
+                                    }
                                     
                                     newName = null;
                                     newTypes.Clear();

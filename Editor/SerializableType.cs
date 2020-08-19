@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace lisandroct.EventSystem
@@ -11,7 +12,7 @@ namespace lisandroct.EventSystem
     {
         [SerializeField]
         private byte[] data;
-        
+
         public Type Type { get; private set; }
 
         public SerializableType(Type type) {
@@ -67,6 +68,15 @@ namespace lisandroct.EventSystem
             writer.Write(type.AssemblyQualifiedName);
         }
 
+        public byte[] GetData()
+        {
+            if (data == null)
+            {
+                OnBeforeSerialize();
+            }
+            
+            return data.ToArray();
+        }
 
         public void OnBeforeSerialize()
         {
