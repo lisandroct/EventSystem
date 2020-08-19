@@ -27,8 +27,8 @@ namespace lisandroct.EventSystem
             var scrollPosition = Vector2.zero;
             var generator = new CodeGenerator(EventsPath, EventsInspectorsPath, ListenersPath);
 
-            string namespaceFilter = null;
-            string classFilter = null;
+            var namespaceFilter = "";
+            var classFilter = "";
 
             string newName = null;
             var newTypes = new List<Type>();
@@ -55,8 +55,8 @@ namespace lisandroct.EventSystem
                         if (tabIndex == 1)
                         {
                             scrollPosition = Vector2.zero;
-                            namespaceFilter = null;
-                            classFilter = null;
+                            namespaceFilter = "";
+                            classFilter = "";
 
                             types = LoadTypes();
                             filteredTypes = null;
@@ -146,11 +146,20 @@ namespace lisandroct.EventSystem
                                 EditorGUILayout.Space();
                                 EditorGUILayout.LabelField("Search types", EditorStyles.boldLabel);
                                 EditorGUI.BeginChangeCheck();
-                                namespaceFilter = EditorGUILayout.TextField("Namespace", namespaceFilter);
-                                classFilter = EditorGUILayout.TextField("Class Name", classFilter);
+                                var namespaceName = EditorGUILayout.TextField("Namespace", namespaceFilter);
+                                var className = EditorGUILayout.TextField("Class Name", classFilter);
                                 if (EditorGUI.EndChangeCheck())
                                 {
-                                    filteredTypes = FilterTypes(types, classFilter, namespaceFilter);
+                                    var moreSpecific = className.StartsWith(classFilter) && namespaceName.StartsWith(namespaceFilter);
+                                    if (string.IsNullOrEmpty(classFilter) && string.IsNullOrEmpty(namespaceFilter))
+                                    {
+                                        moreSpecific = false;
+                                    }
+                                    
+                                    classFilter = className;
+                                    namespaceFilter = namespaceName;
+                                    
+                                    filteredTypes = FilterTypes(moreSpecific ? filteredTypes : types, classFilter, namespaceFilter);
                                 }
 
                                 if (filteredTypes != null)
