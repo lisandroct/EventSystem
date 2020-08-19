@@ -26,7 +26,7 @@ namespace lisandroct.EventSystem
             var typeName = reader.ReadString();
             var type = Type.GetType(typeName);
             if (type == null)
-                throw new Exception("Can't find type; '" + typeName + "'");
+                return null;
             if (type.IsGenericTypeDefinition && paramCount > 0)
             {
                 var p = new Type[paramCount];

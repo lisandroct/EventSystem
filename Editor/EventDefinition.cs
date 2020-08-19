@@ -26,6 +26,8 @@ namespace lisandroct.EventSystem
 
         public Type[] GetTypes() => Types.Select(type => type.Type).ToArray();
 
+        public bool IsValid => Types.All(serializedType => serializedType.Type != null);
+
         public override string ToString()
         {
             var builder = new StringBuilder(Name);

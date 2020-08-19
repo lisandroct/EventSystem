@@ -70,6 +70,11 @@ namespace lisandroct.EventSystem
                             for (int i = 0, n = settings.Definitions.Count; i < n; i++)
                             {
                                 var definition = settings.Definitions[i];
+
+                                if (!definition.IsValid)
+                                {
+                                    continue;
+                                }
                                     
                                 if(!EditorGUILayout.ToggleLeft(definition.ToString(), true)) {
                                     settings.Definitions.RemoveAt(i);
@@ -87,11 +92,15 @@ namespace lisandroct.EventSystem
                                 {
                                     foreach (var definition in settings.Definitions)
                                     {
+                                        if (!definition.IsValid)
+                                        {
+                                            continue;
+                                        }
+                                        
                                         generator.Generate(definition.Name, definition.GetTypes());
                                     }
                                 }
                                 
-
                                 AssetDatabase.Refresh();
                             }
 
