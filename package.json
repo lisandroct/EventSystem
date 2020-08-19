@@ -1,6 +1,6 @@
 {
   "name": "com.lisandroct.events",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "displayName": "Event System",
   "description": "Event system for Unity using ScriptableObjects.",
   "unity": "2019.4",

@@ -28,15 +28,16 @@ namespace lisandroct.EventSystem
         private Event<object> Target => target as Event<object>;
 
         private S TestObject { get; set; }
+        private SerializedObject SerializedTestObject { get; set; }
         private SerializedProperty Argument0Property { get; set; }
         
         private void OnEnable()
         {
             TestObject = (S) CreateInstance(typeof(S));
             
-            var serializedObject = new SerializedObject(TestObject);
+            SerializedTestObject = new SerializedObject(TestObject);
             
-            Argument0Property = serializedObject.FindProperty("argument0");
+            Argument0Property = SerializedTestObject.FindProperty("argument0");
         }
         
         public override void OnInspectorGUI()
@@ -47,7 +48,9 @@ namespace lisandroct.EventSystem
             
             EditorGUILayout.Space();
 
+            SerializedTestObject.Update();
             EditorGUILayout.PropertyField(Argument0Property);
+            SerializedTestObject.ApplyModifiedPropertiesWithoutUndo();
 
             EditorGUILayout.Space();
             
@@ -63,6 +66,7 @@ namespace lisandroct.EventSystem
         private Event<T, U> Target => target as Event<T, U>;
 
         private S TestObject { get; set; }
+        private SerializedObject SerializedTestObject { get; set; }
         private SerializedProperty Argument0Property { get; set; }
         private SerializedProperty Argument1Property { get; set; }
         
@@ -70,10 +74,10 @@ namespace lisandroct.EventSystem
         {
             TestObject = (S) CreateInstance(typeof(S));
             
-            var serializedObject = new SerializedObject(TestObject);
+            SerializedTestObject = new SerializedObject(TestObject);
             
-            Argument0Property = serializedObject.FindProperty("argument0");
-            Argument1Property = serializedObject.FindProperty("argument1");
+            Argument0Property = SerializedTestObject.FindProperty("argument0");
+            Argument1Property = SerializedTestObject.FindProperty("argument1");
         }
 
         public override void OnInspectorGUI()
@@ -84,8 +88,10 @@ namespace lisandroct.EventSystem
             
             EditorGUILayout.Space();
 
+            SerializedTestObject.Update();
             EditorGUILayout.PropertyField(Argument0Property);
             EditorGUILayout.PropertyField(Argument1Property);
+            SerializedTestObject.ApplyModifiedPropertiesWithoutUndo();
             
             EditorGUILayout.Space();
             
@@ -101,6 +107,7 @@ namespace lisandroct.EventSystem
         private Event<T, U, V> Target => target as Event<T, U, V>;
 
         private S TestObject { get; set; }
+        private SerializedObject SerializedTestObject { get; set; }
         private SerializedProperty Argument0Property { get; set; }
         private SerializedProperty Argument1Property { get; set; }
         private SerializedProperty Argument2Property { get; set; }
@@ -109,11 +116,11 @@ namespace lisandroct.EventSystem
         {
             TestObject = (S) CreateInstance(typeof(S));
             
-            var serializedObject = new SerializedObject(TestObject);
+            SerializedTestObject = new SerializedObject(TestObject);
             
-            Argument0Property = serializedObject.FindProperty("argument0");
-            Argument1Property = serializedObject.FindProperty("argument1");
-            Argument2Property = serializedObject.FindProperty("argument2");
+            Argument0Property = SerializedTestObject.FindProperty("argument0");
+            Argument1Property = SerializedTestObject.FindProperty("argument1");
+            Argument2Property = SerializedTestObject.FindProperty("argument2");
         }
         
         public override void OnInspectorGUI()
@@ -124,9 +131,11 @@ namespace lisandroct.EventSystem
             
             EditorGUILayout.Space();
 
+            SerializedTestObject.Update();
             EditorGUILayout.PropertyField(Argument0Property);
             EditorGUILayout.PropertyField(Argument1Property);
             EditorGUILayout.PropertyField(Argument2Property);
+            SerializedTestObject.ApplyModifiedPropertiesWithoutUndo();
             
             EditorGUILayout.Space();
             
@@ -142,6 +151,7 @@ namespace lisandroct.EventSystem
         private Event<T, U, V, W> Target => target as Event<T, U, V, W>;
 
         private S TestObject { get; set; }
+        private SerializedObject SerializedTestObject { get; set; }
         private SerializedProperty Argument0Property { get; set; }
         private SerializedProperty Argument1Property { get; set; }
         private SerializedProperty Argument2Property { get; set; }
@@ -151,12 +161,12 @@ namespace lisandroct.EventSystem
         {
             TestObject = (S) CreateInstance(typeof(S));
             
-            var serializedObject = new SerializedObject(TestObject);
+            SerializedTestObject = new SerializedObject(TestObject);
             
-            Argument0Property = serializedObject.FindProperty("argument0");
-            Argument1Property = serializedObject.FindProperty("argument1");
-            Argument2Property = serializedObject.FindProperty("argument2");
-            Argument3Property = serializedObject.FindProperty("argument3");
+            Argument0Property = SerializedTestObject.FindProperty("argument0");
+            Argument1Property = SerializedTestObject.FindProperty("argument1");
+            Argument2Property = SerializedTestObject.FindProperty("argument2");
+            Argument3Property = SerializedTestObject.FindProperty("argument3");
         }
         
         public override void OnInspectorGUI()
@@ -167,10 +177,12 @@ namespace lisandroct.EventSystem
             
             EditorGUILayout.Space();
 
+            SerializedTestObject.Update();
             EditorGUILayout.PropertyField(Argument0Property);
             EditorGUILayout.PropertyField(Argument1Property);
             EditorGUILayout.PropertyField(Argument2Property);
             EditorGUILayout.PropertyField(Argument3Property);
+            SerializedTestObject.ApplyModifiedPropertiesWithoutUndo();
             
             EditorGUILayout.Space();
             
