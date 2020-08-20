@@ -25,7 +25,7 @@ namespace lisandroct.EventSystem
     
     public class EventInspector<T, S> : Editor where S : TestObject<T>
     {
-        private Event<object> Target => target as Event<object>;
+        private Event<T> Target => target as Event<T>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
