@@ -1,9 +1,9 @@
 {
   "name": "com.lisandroct.events",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "displayName": "Event System",
   "description": "Event system for Unity using ScriptableObjects.",
-  "unity": "2019.4",
+  "unity": "2017.1",
   "author": {
     "name": "Lisandro Crespo",
     "email": "hey@lisandroct.com",
@@ -11,5 +11,22 @@
   },
   "dependencies": {
     "com.lisandroct.core": "0.0.2"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Base Settings",
+      "description": "Settings file sample with basic event types",
+      "path": "Samples~/Base Settings"
+    },
+    {
+      "displayName": "Example",
+      "description": "Basic example (it contains Bool and Float event definitions)",
+      "path": "Samples~/Example"
+    },
+    {
+      "displayName": "Example (<2020)",
+      "description": "Basic example for older versions than 2020 (it contains Bool and Float event definitions)",
+      "path": "Samples~/Example-2019"
+    }
+  ]
 }

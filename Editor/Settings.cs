@@ -22,8 +22,6 @@ namespace lisandroct.EventSystem
             var settings = AssetDatabase.LoadAssetAtPath<Settings>(path);
             if (settings != null) return settings;
             
-            Debug.Log("New Settings!");
-            
             settings = CreateInstance<Settings>();
             
             AssetDatabase.CreateAsset(settings, path);
