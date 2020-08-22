@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace lisandroct.EventSystem
@@ -6,29 +6,19 @@ namespace lisandroct.EventSystem
     [CreateAssetMenu(fileName = "OnGameEvent", menuName = "Events/Game Event")]
     public class Event : ScriptableObject
     {
-        private List<IListener> listeners { get; } = new List<IListener>();
-        public int ListenersCount => listeners.Count;
+        private event Action OnEvent;
+        public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
 
-        public void Raise() {
-            for(int i = listeners.Count - 1; i >= 0; i--) {
-                listeners[i].OnEventRaised();
-            }
+        public void Invoke() => OnEvent?.Invoke();
+
+        public void Register(IListener listener) => Register(listener.OnEventRaised);
+        public void Register(Action handler)
+        {
+            OnEvent -= handler;
+            OnEvent += handler;
         }
 
-        public void RegisterListener(IListener listener) {
-            if(listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Add(listener);
-        }
-
-        public void UnregisterListener(IListener listener) {
-            if(!listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Remove(listener);
-        }
+        public void Unregister(IListener listener) => Unregister(listener.OnEventRaised);
+        public void Unregister(Action handler) => OnEvent -= handler;
     }
 }

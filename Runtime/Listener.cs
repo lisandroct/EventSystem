@@ -1,59 +1,51 @@
-﻿using lisandroct.EventSystem;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace lisandroct.EventSystem
 {
-    #if UNITY_2020_1_OR_NEWER
     public interface IListener { void OnEventRaised(); }
     
+    #if UNITY_2020_1_OR_NEWER
     public class Listener : MonoBehaviour, IListener
     {
-        [FormerlySerializedAs("_gameEvent")] [FormerlySerializedAs("m_Event")] [SerializeField]
-        private Event @event;
-        private Event Event => @event;
+        [SerializeField]
+        private Event _event;
+        private Event Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent _response;
-        private UnityEvent response => _response;
+        private UnityEvent Response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.Register(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.Unregister(this);
         }
 
-        public void OnEventRaised() {
-            response.Invoke();
-        }
+        public void OnEventRaised() => Response?.Invoke();
     }
     #else
-    public interface IListener { void OnEventRaised(); }
-    
     public class Listener : MonoBehaviour, IListener
     {
-        [FormerlySerializedAs("_gameEvent")] [FormerlySerializedAs("m_Event")] [SerializeField]
-        private Event @event;
-        private Event Event => @event;
+        [SerializeField]
+        private Event _event;
+        private Event Event => _event;
 
-        [FormerlySerializedAs("m_Response")] [SerializeField]
+        [SerializeField]
         private UnityEvent _response;
-        private UnityEvent response => _response;
+        private UnityEvent Response => _response;
 
         private void OnEnable() {
-            Event.RegisterListener(this);
+            Event?.RegisterListener(this);
         }
 
         private void OnDisable() {
-            Event.UnregisterListener(this);
+            Event?.UnregisterListener(this);
         }
 
-        public void OnEventRaised() {
-            response.Invoke();
-        }
+        public void OnEventRaised() => Response?.Invoke();
     }
     #endif
 }

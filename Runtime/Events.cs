@@ -6,113 +6,73 @@ namespace lisandroct.EventSystem
 {
     public abstract class Event<T> : ScriptableObject
     {
-        private List<IListener<T>> listeners { get; } = new List<IListener<T>>();
-        public int ListenersCount => listeners.Count;
+        private event Action<T> OnEvent;
+        public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
 
-        public void Raise(T element) {
-            for(int i = listeners.Count - 1; i >= 0; i--) {
-                listeners[i].OnEventRaised(element);
-            }
-        }
-        
-        public void RegisterListener(IListener<T> listener) {
-            if(listeners.Contains(listener)) {
-                return;
-            }
+        public void Invoke(T arg) => OnEvent?.Invoke(arg);
 
-            listeners.Add(listener);
+        public void Register(IListener<T> listener) => Register(listener.OnEventRaised);
+        public void Register(Action<T> handler)
+        {
+            OnEvent -= handler;
+            OnEvent += handler;
         }
 
-        public void UnregisterListener(IListener<T> listener) {
-            if(!listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Remove(listener);
-        }
+        public void Unregister(IListener<T> listener) => Unregister(listener.OnEventRaised);
+        public void Unregister(Action<T> handler) => OnEvent -= handler;
     }
 
     public abstract class Event<T, U> : ScriptableObject
     {
-        private List<IListener<T, U>> listeners { get; } = new List<IListener<T, U>>();
-        public int ListenersCount => listeners.Count;
+        private event Action<T, U> OnEvent;
+        public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
 
-        public void Raise(T element0, U element1) {
-            for(int i = listeners.Count - 1; i >= 0; i--) {
-                listeners[i].OnEventRaised(element0, element1);
-            }
+        public void Invoke(T arg0, U arg1) => OnEvent?.Invoke(arg0, arg1);
+
+        public void Register(IListener<T, U> listener) => Register(listener.OnEventRaised);
+        public void Register(Action<T, U> listener)
+        {
+            OnEvent -= listener;
+            OnEvent += listener;
         }
 
-        public void RegisterListener(IListener<T, U> listener) {
-            if(listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Add(listener);
-        }
-
-        public void UnregisterListener(IListener<T, U> listener) {
-            if(!listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Remove(listener);
-        }
-    }
+        public void Unregister(IListener<T, U> listener) => Unregister(listener.OnEventRaised);
+        public void Unregister(Action<T, U> listener) => OnEvent -= listener;
+}
 
     public abstract class Event<T, U, V> : ScriptableObject
     {
-        private List<IListener<T, U, V>> listeners { get; } = new List<IListener<T, U, V>>();
-        public int ListenersCount => listeners.Count;
+        private event Action<T, U, V> OnEvent;
+        public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
 
-        public void Raise(T element0, U element1, V element2) {
-            for(int i = listeners.Count - 1; i >= 0; i--) {
-                listeners[i].OnEventRaised(element0, element1, element2);
-            }
+        public void Invoke(T arg0, U arg1, V arg2) => OnEvent?.Invoke(arg0, arg1, arg2);
+
+        public void Register(IListener<T, U, V> listener) => Register(listener.OnEventRaised);
+        public void Register(Action<T, U, V> listener)
+        {
+            OnEvent -= listener;
+            OnEvent += listener;
         }
 
-        public void RegisterListener(IListener<T, U, V> listener) {
-            if(listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Add(listener);
-        }
-
-        public void UnregisterListener(IListener<T, U, V> listener) {
-            if(!listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Remove(listener);
-        }
+        public void Unregister(IListener<T, U, V> listener) => Unregister(listener.OnEventRaised);
+        public void Unregister(Action<T, U, V> listener) => OnEvent -= listener;
     }
 
     public abstract class Event<T, U, V, W> : ScriptableObject
     {
-        private List<IListener<T, U, V, W>> listeners { get; } = new List<IListener<T, U, V, W>>();
-        public int ListenersCount => listeners.Count;
+        private event Action<T, U, V, W> OnEvent;
+        public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
 
-        public void Raise(T element0, U element1, V element2, W element3) {
-            for(int i = listeners.Count - 1; i >= 0; i--) {
-                listeners[i].OnEventRaised(element0, element1, element2, element3);
-            }
+        public void Invoke(T arg0, U arg1, V arg2, W arg3) => OnEvent?.Invoke(arg0, arg1, arg2, arg3);
+        
+        public void Register(IListener<T, U, V, W> listener) => Register(listener.OnEventRaised);
+        public void Register(Action<T, U, V, W> listener)
+        {
+            OnEvent -= listener;
+            OnEvent += listener;
         }
 
-        public void RegisterListener(IListener<T, U, V, W> listener) {
-            if(listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Add(listener);
-        }
-
-        public void UnregisterListener(IListener<T, U, V, W> listener) {
-            if(!listeners.Contains(listener)) {
-                return;
-            }
-
-            listeners.Remove(listener);
-        }
+        public void Unregister(IListener<T, U, V, W> listener) => Unregister(listener.OnEventRaised);
+        public void Unregister(Action<T, U, V, W> listener) => OnEvent -= listener;
     }
 }

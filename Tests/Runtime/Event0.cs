@@ -4,10 +4,10 @@ using lisandroct.EventSystem;
 using NSubstitute;
 using Event = lisandroct.EventSystem.Event;
 
-namespace Given_GameEvent0
+namespace Given_Event0
 {
     public class Given {
-        protected Event Event { get; set; }
+        protected Event Event { get; private set; }
 
         [SetUp]
         public virtual void SetUp() {
@@ -18,7 +18,7 @@ namespace Given_GameEvent0
     public class When_Created : Given {
         [Test]
         public void Then_HasNoListeners() {
-            Assert.AreEqual(0, Event.ListenersCount);
+            Assert.AreEqual(0, Event.HandlersCount);
         }
     }
 
@@ -26,12 +26,12 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            Event.RegisterListener(Substitute.For<IListener>());
+            Event.Register(Substitute.For<IListener>());
         }
 
         [Test]
         public void Then_HasOneListener() {
-            Assert.AreEqual(1, Event.ListenersCount);
+            Assert.AreEqual(1, Event.HandlersCount);
         }
     }
 
@@ -40,13 +40,13 @@ namespace Given_GameEvent0
             base.SetUp();
 
             IListener listener = Substitute.For<IListener>();
-            Event.RegisterListener(listener);
-            Event.RegisterListener(listener);
+            Event.Register(listener);
+            Event.Register(listener);
         }
 
         [Test]
         public void Then_HasOneListener() {
-            Assert.AreEqual(1, Event.ListenersCount);
+            Assert.AreEqual(1, Event.HandlersCount);
         }
     }
 
@@ -55,13 +55,13 @@ namespace Given_GameEvent0
             base.SetUp();
 
             IListener listener = Substitute.For<IListener>();
-            Event.RegisterListener(listener);
-            Event.UnregisterListener(listener);
+            Event.Register(listener);
+            Event.Unregister(listener);
         }
 
         [Test]
         public void Then_HasNoListener() {
-            Assert.AreEqual(0, Event.ListenersCount);
+            Assert.AreEqual(0, Event.HandlersCount);
         }
     }
 
@@ -70,24 +70,24 @@ namespace Given_GameEvent0
         public override void SetUp() {
             base.SetUp();
 
-            Event.RegisterListener(Substitute.For<IListener>());
-            Event.RegisterListener(Substitute.For<IListener>());
+            Event.Register(Substitute.For<IListener>());
+            Event.Register(Substitute.For<IListener>());
         }
 
         [Test]
         public void Then_HasTwoListeners() {
-            Assert.AreEqual(2, Event.ListenersCount);
+            Assert.AreEqual(2, Event.HandlersCount);
         }
     }
 }
 
-namespace Given_GameEvent0.Given_ThreeListenersRegistered
+namespace Given_Event0.Given_ThreeListenersRegisteredAndOneUnregistered
 {
-    public class Given : Given_GameEvent0.Given
+    public class Given : Given_Event0.Given
     {
-        protected IListener listener0 { get; set; }
-        protected IListener listener1 { get; set; }
-        protected IListener listener2 { get; set; }
+        protected IListener listener0 { get; private set; }
+        protected IListener listener1 { get; private set; }
+        protected IListener listener2 { get; private set; }
 
         public override void SetUp() {
             base.SetUp();
@@ -96,9 +96,11 @@ namespace Given_GameEvent0.Given_ThreeListenersRegistered
             listener1 = Substitute.For<IListener>();
             listener2 = Substitute.For<IListener>();
             
-            Event.RegisterListener(listener0);
-            Event.RegisterListener(listener1);
-            Event.RegisterListener(listener2);
+            Event.Register(listener0);
+            Event.Register(listener1);
+            Event.Register(listener2);
+            
+            Event.Unregister(listener1);
         }
     }
 
@@ -107,13 +109,13 @@ namespace Given_GameEvent0.Given_ThreeListenersRegistered
         public override void SetUp() {
             base.SetUp();
 
-            Event.Raise();
+            Event.Invoke();
         }
 
         [Test]
-        public void Then_TheThreeListenersGetCalled() {
+        public void Then_OnlyTheTwoRegisteredListenersGetCalled() {
             listener0.Received().OnEventRaised();
-            listener1.Received().OnEventRaised();
+            listener1.DidNotReceive().OnEventRaised();
             listener2.Received().OnEventRaised();
         }
     }

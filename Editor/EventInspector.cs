@@ -6,7 +6,7 @@ namespace lisandroct.EventSystem
     [CustomEditor(typeof(Event))]
     public class EventInspector : Editor
     {
-        private Event Target => target as Event;
+        private Event Event => target as Event;
         
         public override void OnInspectorGUI()
         {
@@ -18,14 +18,14 @@ namespace lisandroct.EventSystem
             
             if (GUILayout.Button("Raise"))
             {
-                Target.Raise();
+                Event.Invoke();
             }
         }
     }
     
     public class EventInspector<T, S> : Editor where S : TestObject<T>
     {
-        private Event<T> Target => target as Event<T>;
+        private Event<T> Event => target as Event<T>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -56,14 +56,14 @@ namespace lisandroct.EventSystem
             
             if (GUILayout.Button("Raise"))
             {
-                Target.Raise(TestObject.Argument0);
+                Event.Invoke(TestObject.Argument0);
             }
         }
     }
     
     public abstract class EventInspector<T, U, S> : Editor where S : TestObject<T, U>
     {
-        private Event<T, U> Target => target as Event<T, U>;
+        private Event<T, U> Event => target as Event<T, U>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -97,14 +97,14 @@ namespace lisandroct.EventSystem
             
             if (GUILayout.Button("Raise"))
             {
-                Target.Raise(TestObject.Argument0, TestObject.Argument1);
+                Event.Invoke(TestObject.Argument0, TestObject.Argument1);
             }
         }
     }
     
     public abstract class EventInspector<T, U, V, S> : Editor where S : TestObject<T, U, V>
     {
-        private Event<T, U, V> Target => target as Event<T, U, V>;
+        private Event<T, U, V> Event => target as Event<T, U, V>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -141,14 +141,14 @@ namespace lisandroct.EventSystem
             
             if (GUILayout.Button("Raise"))
             {
-                Target.Raise(TestObject.Argument0, TestObject.Argument1, TestObject.Argument2);
+                Event.Invoke(TestObject.Argument0, TestObject.Argument1, TestObject.Argument2);
             }
         }
     }
     
     public abstract class EventInspector<T, U, V, W, S> : Editor where S : TestObject<T, U, V, W>
     {
-        private Event<T, U, V, W> Target => target as Event<T, U, V, W>;
+        private Event<T, U, V, W> Event => target as Event<T, U, V, W>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -188,7 +188,7 @@ namespace lisandroct.EventSystem
             
             if (GUILayout.Button("Raise"))
             {
-                Target.Raise(TestObject.Argument0, TestObject.Argument1, TestObject.Argument2, TestObject.Argument3);
+                Event.Invoke(TestObject.Argument0, TestObject.Argument1, TestObject.Argument2, TestObject.Argument3);
             }
         }
     }
