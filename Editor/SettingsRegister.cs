@@ -41,9 +41,9 @@ namespace lisandroct.EventSystem
 
             var settings = serializedObject.targetObject as Settings;
 
-            var provider = new SettingsProvider("Project/EventSystem", SettingsScope.Project)
+            var provider = new SettingsProvider("Project/Event System", SettingsScope.Project)
             {
-                label = "EventSystem",
+                label = "Event System",
                 guiHandler = (searchContext) =>
                 {
                     serializedObject.Update();
