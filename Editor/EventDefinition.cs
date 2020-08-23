@@ -3,7 +3,6 @@ using System.Text;
 using UnityEngine;
 using System.Linq;
 
-
 namespace lisandroct.EventSystem
 {
     [Serializable]
@@ -15,7 +14,13 @@ namespace lisandroct.EventSystem
         
         [SerializeField]
         private SerializableType[] _types;
-        private SerializableType[] Types => _types; 
+        private SerializableType[] Types => _types;
+        
+        public EventDefinition(string name, params Type[] types)
+        {
+            _name = name;
+            _types = types.Select(type => new SerializableType(type)).ToArray();
+        }
 
         public Type[] GetTypes() => Types.Select(type => type.Type).ToArray();
 
