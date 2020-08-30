@@ -1,6 +1,21 @@
 # Event System
 Event system for Unity using ScriptableObjects based on the concept introduced by Ryan Hipple in his [talk](https://www.youtube.com/watch?v=raQ3iHhE_Kk) at Unite 2017.
 
+## Why
+Event systems and the observable pattern are very common in games and programs of every kind. So common that C# has it's own solution at the language level. Then why do we need yet another system? **Event System** makes the most out of the Unity Editor.
+
+In **Event System** you can create the events and set all the listeners in the editor without writing any code.
+
+ Many times we want to have global access to an event and being able to subscribe from anywhere but we would also like to avoid creating a singleton, with all its drawbacks, or have a stateful class exposed to every piece of code in our game. With **Event System** you can get a reference to your events as with any other asset in Unity and through the Unity Editor you can globally access any event without any major drawbacks.
+
+In any observable pattern the main goal is to avoid letting the dispatcher know anything about the listeners. But, in many cases, the listeners end up knowing about the dispatcher anyway. In **Event System** both dispatcher and listeners are completely decoupled.
+
+This last point comes with another possible advantage: using **Event System** it's trivial to dispatch an event from more than one place, which can be tricky in other solutions.
+
+**Event System**  also makes it trivial to test events from the inspector when in Play Mode, making development iterations easier.
+
+And finally, since events, are simply ScriptableObjects, it's very simple to create them programatically in runtime and use them like any other C# event (since the API is very minimal and similar).
+
 ## Installation
 This package depends on [Core](https://github.com/lisandroct/Core). Both packages can be installed through the Unity Package Manager or by modifying the project packages manifest manually.
 ```
@@ -23,7 +38,7 @@ Each event can have up to four arguments. You can add new event types under `Add
 
 To add a new type argument, search for it by filtering by namespace and/or type name and click on it. If you want to remove a previously added type, just click on it. 
 
-The event type will be automatically assigned a name from its argument types. The name can be changed but it's important to not use a name previously used.
+The event type will be automatically assigned a name from its argument types. You can change the name, but it's important to choose a name that was not used previously.
 
 ### Events
 After generating the code, you can create event assets for every event type. Just right click in the Project Window and you'll see all the possible options under `Events`. The event will be automatically named `On[EventName]Event` but can be renamed.
