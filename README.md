@@ -28,12 +28,12 @@ This package depends on [Core](https://github.com/lisandroct/Core). Both package
 ```
 
 ## Demo
-[![Watch the demo](Images~/00.png "Watch the demo")](https://youtu.be/fPYVs0fG6IM)
+[![Watch the demo](Readme~/00.png "Watch the demo")](https://youtu.be/fPYVs0fG6IM)
 
 ## Usage
 After installing **Event System**, the settings can be found in `Edit/Project Settings/Event System`. By default, the settings get generated with a few basic types for your convenience.
 
-![Settings](Images~/01.png "Settings")
+![Settings](Readme~/01.png "Settings")
 
 ### Code generation
 Before being able to use **Event System**, it's necessary to generate the required code for the different event types. In order to do so, under `Event Types` in settings, click `Generate` and all the necessary code will be generated automatically for you.
@@ -43,14 +43,14 @@ Each event can have up to four arguments. You can add new event types under `Add
 
 To add a new type argument, search for it by filtering by namespace and/or type name and click on it. If you want to remove a previously added type, just click on it.
 
-![New Type](Images~/02.png "New Type")
+![New Type](Readme~/02.png "New Type")
 
 The event type will be automatically assigned a name from its argument types. You can change the name, but it's important to choose a name that was not used previously.
 
 ### Events
 After generating the code, you can create event assets for every event type. Just right click in the Project Window and you'll see all the possible options under `Events`. The event will be automatically named `On[EventName]Event` but can be renamed.
 
-![Create](Images~/03.png "Create")
+![Create](Readme~/03.png "Create")
 
 In Unity, you can just get and use a reference to the new event like you do with any other type of asset.
 
@@ -59,7 +59,7 @@ In order to raise the event, every event has a `Raise` method.
 #### Test events
 One of the big benefits of using **Event System** over other solutions is that you can raise and test the events directly from the inspector while in Play Mode by selecting the asset in the Project Window.
 
-![Test](Images~/04.png "Test")
+![Test](Readme~/04.png "Test")
 
 #### Runtime events
 Since events are just ScriptableObjects, it's super easy to create new events on runtime by just calling `ScriptableObject.CreateInstance<[EventType]>()` or `ScriptableObject.CreateInstance(typeof([EventType]))`.
@@ -67,7 +67,7 @@ Since events are just ScriptableObjects, it's super easy to create new events on
 ### Listeners
 There's nothing to prevent you from subscribing to events from code (by using the `Register` and `Unregister` methods) but **Event System** also provides you with Listeners for each event type you generate. Listeners are MonoBehaviours, so you have to attach them to a GameObject.
 
-![Listeners](Images~/05.png "Listeners")
+![Listeners](Readme~/05.png "Listeners")
 
 The listeners expect the reference to the event and call a UnityEvent when the event is raised.
 
