@@ -16,7 +16,7 @@ This last point comes with another advantage: using **Event System** it's trivia
 
 Implementing events with **Event System** makes easier to keep scenes completely independent from each other. You can have the subject in one scene and the listeners in another scene and subscribing to the event would still be trivial.
 
-And finally, since events, are simply ScriptableObjects, it's very simple to create them programatically in runtime and use them like any other C# event (since the API is very minimal and similar).
+Finally, since events are just ScriptableObjects, it's very simple to create them programatically in runtime and use them like any other C# event (since the API is very minimal and similar).
 
 ## Installation
 This package depends on [Core](https://github.com/lisandroct/Core). Both packages can be installed through the Unity Package Manager or by modifying the project packages manifest manually.
