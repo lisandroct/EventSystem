@@ -2,17 +2,19 @@
 Event system for Unity using ScriptableObjects based on the concept introduced by Ryan Hipple in his [talk](https://www.youtube.com/watch?v=raQ3iHhE_Kk) at Unite 2017.
 
 ## Why
-Event systems and the observable pattern are very common in games and programs of every kind. So common that C# has it's own solution at the language level. Then why do we need yet another system? **Event System** makes the most out of the Unity Editor.
+Event systems and the observable pattern are very common in games and programs of every kind. They're so common that C# has it's own solution implemented at the language level. Then why do we need yet another system? **Event System** makes the most out of the Unity Editor.
 
 In **Event System** you can create the events and set all the listeners in the editor without writing any code.
 
- Many times we want to have global access to an event and being able to subscribe from anywhere but we would also like to avoid creating a singleton, with all its drawbacks, or have a stateful class exposed to every piece of code in our game. With **Event System** you can get a reference to your events as with any other asset in Unity and through the Unity Editor you can globally access any event without any major drawbacks.
+Many times we want to have global access to an event and being able to subscribe to it from anywhere but we would also like to avoid creating a singleton, with all its drawbacks, or have a stateful class exposed to every piece of code in our game. With **Event System** you can get a reference to your events the same way you do with any other asset in Unity and through the Unity Editor you can globally access any event without any major drawbacks.
 
-In any observable pattern the main goal is to avoid letting the dispatcher know anything about the listeners. But, in many cases, the listeners end up knowing about the dispatcher anyway. In **Event System** both dispatcher and listeners are completely decoupled.
+In any observable pattern the main goal is to avoid letting the subject know anything about the listeners. But, in many cases, the listeners end up coupled to the subject anyway. In **Event System** both subject and listeners are completely decoupled.
 
-This last point comes with another possible advantage: using **Event System** it's trivial to dispatch an event from more than one place, which can be tricky in other solutions.
+This last point comes with another advantage: using **Event System** it's trivial to dispatch an event from more than one place.
 
-**Event System**  also makes it trivial to test events from the inspector when in Play Mode, making development iterations easier.
+**Event System**  also makes it trivial to test events from the inspector while in Play Mode, making development easier and faster.
+
+Implementing events with **Event System** makes easier to keep scenes completely independent from each other. You can have the subject in one scene and the listeners in another scene and subscribing to the event would still be trivial.
 
 And finally, since events, are simply ScriptableObjects, it's very simple to create them programatically in runtime and use them like any other C# event (since the API is very minimal and similar).
 
