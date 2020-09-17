@@ -38,11 +38,11 @@ namespace lisandroct.EventSystem
         private UnityEvent Response => _response;
 
         private void OnEnable() {
-            Event?.RegisterListener(this);
+            Event?.Register(this);
         }
 
         private void OnDisable() {
-            Event?.UnregisterListener(this);
+            Event?.Unregister(this);
         }
 
         public void OnEventRaised() => Response?.Invoke();
