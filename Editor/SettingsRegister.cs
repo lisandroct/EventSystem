@@ -263,7 +263,7 @@ namespace lisandroct.EventSystem
                 .Select(a => a.Replace('/', '\\').Split('\\').Last());
 
             return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(assembly => assembly.IsDynamic || assemblies.Contains(assembly.Location.Split('\\').Last()))
+                .Where(assembly => assembly.IsDynamic || assemblies.Contains(assembly.Location.Replace('/', '\\').Split('\\').Last()))
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(IsNotGeneric)
                 .OrderBy(type => type.Namespace)
