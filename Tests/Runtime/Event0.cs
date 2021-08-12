@@ -2,16 +2,15 @@
 using UnityEngine;
 using lisandroct.EventSystem;
 using NSubstitute;
-using Event = lisandroct.EventSystem.Event;
 
 namespace Given_Event0
 {
     public class Given {
-        protected Event Event { get; private set; }
+        protected GameEvent Event { get; private set; }
 
         [SetUp]
         public virtual void SetUp() {
-            Event = ScriptableObject.CreateInstance<Event>();
+            Event = ScriptableObject.CreateInstance<GameEvent>();
         }
     }
 

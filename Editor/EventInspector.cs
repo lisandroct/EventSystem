@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace lisandroct.EventSystem
 {
-    [CustomEditor(typeof(Event))]
+    [CustomEditor(typeof(GameEvent))]
     public class EventInspector : Editor
     {
-        private Event Event => target as Event;
+        private GameEvent Event => target as GameEvent;
         
         public override void OnInspectorGUI()
         {

@@ -49,7 +49,7 @@ namespace lisandroct.EventSystem
             var compileUnit = CreateCompileUnit();
             var codeNamespace = AddNamespace(compileUnit);
             var codeClass = AddClass(className, codeNamespace);
-            AddParentType(codeClass, typeof(Event), types);
+            AddParentType(codeClass, typeof(GameEvent), types);
             AddAnnotation(typeof(CreateAssetMenuAttribute), codeClass, ("fileName", $"On{className}"), ("menuName", $"Events/{name} Event"));
             
             return compileUnit;
