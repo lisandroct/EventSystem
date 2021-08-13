@@ -9,8 +9,8 @@ namespace lisandroct.EventSystem
     public class Listener : MonoBehaviour, IListener
     {
         [SerializeField]
-        private Event _event;
-        private Event Event => _event;
+        private GameEvent _event;
+        private GameEvent Event => _event;
 
         [SerializeField]
         private UnityEvent _response;
