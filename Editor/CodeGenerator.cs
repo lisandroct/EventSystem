@@ -12,14 +12,16 @@ namespace lisandroct.EventSystem
     public class CodeGenerator
     {
         private string EventsPath { get; }
+        private string TestsPath { get; }
         private string EventsInspectorsPath { get; }
         private string ListenersPath { get; }
         
-        public CodeGenerator(string eventsPath, string eventsInspectorsPath, string listenersPath)
+        public CodeGenerator(string eventsPath, string testsPath, string eventsInspectorsPath, string listenersPath)
         {
             EventsPath = eventsPath;
             EventsInspectorsPath = eventsInspectorsPath;
             ListenersPath = listenersPath;
+            TestsPath = testsPath;
         }
         
         public void Generate(string name, Type[] types)
@@ -34,10 +36,12 @@ namespace lisandroct.EventSystem
             }
             
             var eventUnit = GenerateEvent(name, types);
+            var testUnit = GenerateTest(name, types);
             var eventInspectorUnit = GenerateEventInspector(name, types);
             var listenerUnit = GenerateListener(name, types);
 
             GenerateCsFile(EventsPath, eventUnit);
+            GenerateCsFile(TestsPath, testUnit);
             GenerateCsFile(EventsInspectorsPath, eventInspectorUnit);
             GenerateCsFile(ListenersPath, listenerUnit);
         }
@@ -54,7 +58,34 @@ namespace lisandroct.EventSystem
             
             return compileUnit;
         }
-        
+
+        private static CodeCompileUnit GenerateTest(string name, Type[] types)
+        {
+            var className = $"{name}Test";
+            
+            var compileUnit = CreateCompileUnit();
+            var codeNamespace = AddNamespace(compileUnit);
+            var codeClass = AddClass(className, codeNamespace);
+
+            switch (types.Length)
+            {
+                case 1:
+                    AddParentType(codeClass, typeof(TestObject<>), types);
+                    break;
+                case 2:
+                    AddParentType(codeClass, typeof(TestObject<,>), types);
+                    break;
+                case 3:
+                    AddParentType(codeClass, typeof(TestObject<,,>), types);
+                    break;
+                case 4:
+                    AddParentType(codeClass, typeof(TestObject<,,,>), types);
+                    break;
+            }
+
+            return compileUnit;
+        }
+
         private static CodeCompileUnit GenerateEventInspector(string name, Type[] types)
         {
             var inspectorClassName = $"{name}Inspector";
@@ -63,28 +94,11 @@ namespace lisandroct.EventSystem
             var compileUnit = CreateCompileUnit();
             var codeNamespace = AddNamespace(compileUnit);
 
-            var inspectorCodeClass = AddClass(inspectorClassName, codeNamespace);
-            var inspectorBaseClass = AddParentType(inspectorCodeClass, typeof(EventInspector), types);
-            AddGenerics(inspectorBaseClass, testObjectClassName);
-            AddAnnotationWithType(typeof(CustomEditor), inspectorCodeClass, $"{name}Event");
+            var codeClass = AddClass(inspectorClassName, codeNamespace);
+            var baseClass = AddParentType(codeClass, typeof(EventInspector), types);
+            AddGenerics(baseClass, testObjectClassName);
+            AddAnnotationWithType(typeof(CustomEditor), codeClass, $"{name}Event");
 
-            var testObjectCodeClass = AddClass(testObjectClassName, codeNamespace);
-            switch (types.Length)
-            {
-                case 1:
-                    AddParentType(testObjectCodeClass, typeof(TestObject<>), types);
-                    break;
-                case 2:
-                    AddParentType(testObjectCodeClass, typeof(TestObject<,>), types);
-                    break;
-                case 3:
-                    AddParentType(testObjectCodeClass, typeof(TestObject<,,>), types);
-                    break;
-                case 4:
-                    AddParentType(testObjectCodeClass, typeof(TestObject<,,,>), types);
-                    break;
-            }
-            
             return compileUnit;
         }
 

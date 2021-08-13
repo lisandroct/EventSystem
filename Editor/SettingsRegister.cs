@@ -12,11 +12,13 @@ namespace lisandroct.EventSystem
     public class SettingsRegister {
         private const string Library = "EventSystem";
         private const string Events = "Events";
+        private const string Tests = "Tests";
         private const string Editor = "Editor";
         private const string Listeners = "Listeners";
         
         private static string LibraryPath => $"{CoreFolders.CorePath}/{Library}";
         private static string EventsPath => $"{LibraryPath}/{Events}";
+        private static string TestsPath => $"{LibraryPath}/{Tests}";
         private static string EventsInspectorsPath => $"{EventsPath}/{Editor}";
         private static string ListenersPath => $"{LibraryPath}/{Listeners}";
 
@@ -25,7 +27,7 @@ namespace lisandroct.EventSystem
         {
             var tabIndex = 0;
             var scrollPosition = Vector2.zero;
-            var generator = new CodeGenerator(EventsPath, EventsInspectorsPath, ListenersPath);
+            var generator = new CodeGenerator(EventsPath, TestsPath, EventsInspectorsPath, ListenersPath);
 
             var namespaceFilter = "";
             var classFilter = "";
@@ -237,6 +239,10 @@ namespace lisandroct.EventSystem
             {
                 FileUtil.DeleteFileOrDirectory(ListenersPath);
             }
+            if (AssetDatabase.IsValidFolder(TestsPath))
+            {
+                FileUtil.DeleteFileOrDirectory(TestsPath);
+            }
             
             AssetDatabase.Refresh();
             
@@ -247,6 +253,10 @@ namespace lisandroct.EventSystem
             if (!AssetDatabase.IsValidFolder(ListenersPath))
             {
                 AssetDatabase.CreateFolder(LibraryPath, Listeners);
+            }
+            if (!AssetDatabase.IsValidFolder(TestsPath))
+            {
+                AssetDatabase.CreateFolder(LibraryPath, Tests);
             }
             
             if (!AssetDatabase.IsValidFolder(EventsInspectorsPath))
