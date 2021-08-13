@@ -11,7 +11,6 @@
 namespace lisandroct.EventSystem.Events {
     
     
-    [UnityEditor.CustomEditor(typeof(ColorEvent))]
-    public class ColorInspector : lisandroct.EventSystem.EventInspector<UnityEngine.Color, ColorTest> {
+    public class BoolTest : lisandroct.EventSystem.TestObject<bool> {
     }
 }
