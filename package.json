@@ -1,6 +1,6 @@
 {
   "name": "com.lisandroct.events",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "displayName": "Event System",
   "description": "Event system for Unity using ScriptableObjects.",
   "unity": "2017.1",
@@ -10,18 +10,13 @@
     "url": "https://lisandroct.com"
   },
   "dependencies": {
-    "com.lisandroct.core": "0.0.2"
+    "com.lisandroct.core": "0.1.1"
   },
   "samples": [
     {
-      "displayName": "Example",
+      "displayName": "Example (2020 or newer)",
       "description": "Basic example (it contains Bool and Float event definitions)",
       "path": "Samples~/Example"
-    },
-    {
-      "displayName": "Example (<2020)",
-      "description": "Basic example for older versions than 2020 (it contains Bool and Float event definitions)",
-      "path": "Samples~/Example-2019"
     }
   ]
 }

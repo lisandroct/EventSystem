@@ -9,19 +9,25 @@ namespace lisandroct.EventSystem
     public class Listener : MonoBehaviour, IListener
     {
         [SerializeField]
-        private Event _event;
-        private Event Event => _event;
+        private GameEvent _event;
+        private GameEvent Event => _event;
 
         [SerializeField]
         private UnityEvent _response;
         private UnityEvent Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised() => Response?.Invoke();
@@ -38,11 +44,17 @@ namespace lisandroct.EventSystem
         private UnityEvent Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised() => Response?.Invoke();

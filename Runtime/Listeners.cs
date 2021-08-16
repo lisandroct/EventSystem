@@ -20,11 +20,17 @@ namespace lisandroct.EventSystem
         private UnityEvent<T> Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T arg) => Response?.Invoke(arg);
@@ -41,11 +47,17 @@ namespace lisandroct.EventSystem
         private UnityEvent<T0, T1> Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1) => Response?.Invoke(arg0, arg1);
@@ -62,11 +74,17 @@ namespace lisandroct.EventSystem
         private UnityEvent<T0, T1, T2> Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1, T2 arg2) => Response?.Invoke(arg0, arg1, arg2);
@@ -83,11 +101,17 @@ namespace lisandroct.EventSystem
         private UnityEvent<T0, T1, T2, T3> Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1, T2 arg2, T3 arg3) => Response?.Invoke(arg0, arg1, arg2, arg3);
@@ -104,11 +128,17 @@ namespace lisandroct.EventSystem
         private R response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T arg) => response?.Invoke(arg);
@@ -125,11 +155,17 @@ namespace lisandroct.EventSystem
         private R Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1) => Response?.Invoke(arg0, arg1);
@@ -146,11 +182,17 @@ namespace lisandroct.EventSystem
         private R Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1, T2 arg2) => Response?.Invoke(arg0, arg1, arg2);
@@ -167,11 +209,17 @@ namespace lisandroct.EventSystem
         private R Response => _response;
 
         private void OnEnable() {
-            Event?.Register(this);
+            if (Event != null)
+            {
+                Event.Register(this);
+            }
         }
 
         private void OnDisable() {
-            Event?.Unregister(this);
+            if (Event != null)
+            {
+                Event.Unregister(this);
+            }
         }
 
         public void OnEventRaised(T0 arg0, T1 arg1, T2 arg2, T3 arg3) => Response?.Invoke(arg0, arg1, arg2, arg3);
