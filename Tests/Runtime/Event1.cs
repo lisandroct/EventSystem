@@ -5,7 +5,7 @@ using NSubstitute;
 
 namespace Given_Event1
 {
-    public class Event1 : Event<int> { }
+    public class Event1 : GameEvent<int> { }
     
     public class Given {
         protected Event1 Event { get; private set; }

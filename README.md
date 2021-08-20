@@ -2,7 +2,7 @@
 Event system for Unity using ScriptableObjects based on the concept introduced by Ryan Hipple in his [talk](https://www.youtube.com/watch?v=raQ3iHhE_Kk) at Unite 2017.
 
 ## Why
-Event systems and the observable pattern are very common in games and programs of every kind. They're so common that C# has it's own solution implemented at the language level. Then why do we need yet another system? **Event System** makes the most out of the Unity Editor.
+Event systems and the observable pattern are very common in games and programs of every kind. They're so common that C# has its own solution implemented at the language level. Then why do we need yet another system? **Event System** makes the most out of the Unity Editor.
 
 In **Event System** you can create the events and set all the listeners in the editor without writing any code.
 
@@ -14,7 +14,7 @@ This last point comes with another advantage: using **Event System** it's trivia
 
 **Event System**  also makes it trivial to test events from the inspector while in Play Mode, making development easier and faster.
 
-Implementing events with **Event System** makes easier to keep scenes completely independent from each other. You can have the subject in one scene and the listeners in another scene and subscribing to the event would still be trivial.
+Implementing events with **Event System** makes it easier to keep scenes completely independent from each other. You can have the subject in one scene and the listeners in another scene and subscribing to the event would still be trivial.
 
 Finally, since events are just ScriptableObjects, it's very simple to create them programatically in runtime and use them like any other C# event (since the API is very minimal and similar).
 

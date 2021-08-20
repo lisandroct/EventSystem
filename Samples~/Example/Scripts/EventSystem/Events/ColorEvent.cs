@@ -12,6 +12,6 @@ namespace lisandroct.EventSystem.Events {
     
     
     [UnityEngine.CreateAssetMenuAttribute(fileName="OnColorEvent", menuName="Events/Color Event")]
-    public class ColorEvent : lisandroct.EventSystem.Event<UnityEngine.Color> {
+    public class ColorEvent : lisandroct.EventSystem.GameEvent<UnityEngine.Color> {
     }
 }
