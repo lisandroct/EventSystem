@@ -14,7 +14,4 @@ namespace lisandroct.EventSystem.Events {
     [UnityEditor.CustomEditor(typeof(BoolEvent))]
     public class BoolInspector : lisandroct.EventSystem.EventInspector<bool, BoolTest> {
     }
-    
-    public class BoolTest : lisandroct.EventSystem.TestObject<bool> {
-    }
 }
