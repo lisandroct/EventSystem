@@ -3,7 +3,7 @@ using UnityEngine;
 using lisandroct.EventSystem;
 using NSubstitute;
 
-public class Event4 : Event<int, int, int, int> { }
+public class Event4 : GameEvent<int, int, int, int> { }
 
 namespace Given_Event4
 {

@@ -25,7 +25,7 @@ namespace lisandroct.EventSystem
     
     public class EventInspector<T, S> : Editor where S : TestObject<T>
     {
-        private Event<T> Event => target as Event<T>;
+        private GameEvent<T> Event => target as GameEvent<T>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -63,7 +63,7 @@ namespace lisandroct.EventSystem
     
     public abstract class EventInspector<T, U, S> : Editor where S : TestObject<T, U>
     {
-        private Event<T, U> Event => target as Event<T, U>;
+        private GameEvent<T, U> Event => target as GameEvent<T, U>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -104,7 +104,7 @@ namespace lisandroct.EventSystem
     
     public abstract class EventInspector<T, U, V, S> : Editor where S : TestObject<T, U, V>
     {
-        private Event<T, U, V> Event => target as Event<T, U, V>;
+        private GameEvent<T, U, V> Event => target as GameEvent<T, U, V>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }
@@ -148,7 +148,7 @@ namespace lisandroct.EventSystem
     
     public abstract class EventInspector<T, U, V, W, S> : Editor where S : TestObject<T, U, V, W>
     {
-        private Event<T, U, V, W> Event => target as Event<T, U, V, W>;
+        private GameEvent<T, U, V, W> Event => target as GameEvent<T, U, V, W>;
 
         private S TestObject { get; set; }
         private SerializedObject SerializedTestObject { get; set; }

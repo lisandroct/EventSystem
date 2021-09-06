@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace lisandroct.EventSystem
 {
-    public abstract class Event<T> : ScriptableObject
+    public abstract class GameEvent<T> : ScriptableObject
     {
         private event Action<T> OnEvent;
         public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
@@ -21,7 +21,7 @@ namespace lisandroct.EventSystem
         public void Unregister(Action<T> handler) => OnEvent -= handler;
     }
 
-    public abstract class Event<T, U> : ScriptableObject
+    public abstract class GameEvent<T, U> : ScriptableObject
     {
         private event Action<T, U> OnEvent;
         public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
@@ -39,7 +39,7 @@ namespace lisandroct.EventSystem
         public void Unregister(Action<T, U> listener) => OnEvent -= listener;
 }
 
-    public abstract class Event<T, U, V> : ScriptableObject
+    public abstract class GameEvent<T, U, V> : ScriptableObject
     {
         private event Action<T, U, V> OnEvent;
         public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;
@@ -57,7 +57,7 @@ namespace lisandroct.EventSystem
         public void Unregister(Action<T, U, V> listener) => OnEvent -= listener;
     }
 
-    public abstract class Event<T, U, V, W> : ScriptableObject
+    public abstract class GameEvent<T, U, V, W> : ScriptableObject
     {
         private event Action<T, U, V, W> OnEvent;
         public int HandlersCount => OnEvent?.GetInvocationList().Length ?? 0;

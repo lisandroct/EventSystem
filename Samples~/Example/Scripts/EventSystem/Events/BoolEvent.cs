@@ -12,6 +12,6 @@ namespace lisandroct.EventSystem.Events {
     
     
     [UnityEngine.CreateAssetMenuAttribute(fileName="OnBoolEvent", menuName="Events/Bool Event")]
-    public class BoolEvent : lisandroct.EventSystem.Event<bool> {
+    public class BoolEvent : lisandroct.EventSystem.GameEvent<bool> {
     }
 }
