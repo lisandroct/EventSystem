@@ -294,28 +294,37 @@ namespace lisandroct.EventSystem
                 .ToArray();
         }
 
-        private static IEnumerable<Type> FilterTypes(IEnumerable<Type> types, string classFilter, string namespaceFilter)
+        private static IEnumerable<Type> FilterTypes(IEnumerable<Type> types, string typeFilter, string namespaceFilter)
         {
-            if (types == null || (string.IsNullOrEmpty(classFilter) && string.IsNullOrEmpty(namespaceFilter)))
+            if (types == null || (string.IsNullOrEmpty(typeFilter) && string.IsNullOrEmpty(namespaceFilter)))
             {
                 return null;
             }
             
+            namespaceFilter = string.IsNullOrEmpty(namespaceFilter) ? null : namespaceFilter.ToLowerInvariant();
+            typeFilter = string.IsNullOrEmpty(typeFilter) ? null : typeFilter.ToLowerInvariant();
+
+            var ignoreNamespace = namespaceFilter == null;
+            var ignoreType = typeFilter == null;
+            
             return types.Where(type =>
             {
-                var typeName = type.GetFriendlyName().ToLowerInvariant();
-                var typeNamespace = string.IsNullOrEmpty(type.Namespace) ? "" : type.Namespace.ToLowerInvariant();
-                namespaceFilter = string.IsNullOrEmpty(namespaceFilter) ? "" : namespaceFilter.ToLowerInvariant();
-
-                if (string.IsNullOrEmpty(classFilter))
+                if (type == null)
                 {
-                    return typeNamespace.StartsWith(namespaceFilter);
+                    return false;
                 }
                 
-                classFilter = string.IsNullOrEmpty(classFilter) ? "" : classFilter.ToLowerInvariant();
+                var typeName = type.GetFriendlyName().ToLowerInvariant();
+                var typeNamespace = string.IsNullOrEmpty(type.Namespace) ? null : type.Namespace.ToLowerInvariant();
 
-                return typeName.StartsWith(classFilter) && typeNamespace.StartsWith(namespaceFilter);
+                var namespacePass = ignoreNamespace || typeNamespace != null && typeNamespace.StartsWith(namespaceFilter);
+                
+                if (ignoreType)
+                {
+                    return namespacePass;
+                }
 
+                return typeName.StartsWith(typeFilter) && namespacePass;
             });
         }
 
