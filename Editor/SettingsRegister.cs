@@ -38,17 +38,25 @@ namespace lisandroct.EventSystem
             IEnumerable<Type> types = null;
             IEnumerable<Type> filteredTypes = null;
             
-            var serializedObject = Settings.GetSerializedObject();
+            var existing = Settings.GetSerializedObject(out var serializedObject);
             var definitionsProperty = serializedObject.FindProperty("definitions");
 
             var settings = serializedObject.targetObject as Settings;
+            if (settings == null)
+            {
+                return null;
+            }
 
             var provider = new SettingsProvider("Project/Event System", SettingsScope.Project)
             {
                 label = "Event System",
-                guiHandler = (searchContext) =>
+                guiHandler = searchContext =>
                 {
                     serializedObject.Update();
+                    if (!existing)
+                    {
+                        AddDefaultEvents(settings);
+                    }
                     
                     EditorGUI.BeginChangeCheck();
                     tabIndex = GUILayout.Toolbar(tabIndex, new [] { "Event Types", "Add New" });
@@ -86,6 +94,11 @@ namespace lisandroct.EventSystem
                             }
 
                             EditorGUILayout.EndScrollView();
+
+                            if (GUILayout.Button("Add Default Events"))
+                            {
+                                AddDefaultEvents(settings);
+                            }
 
                             if (GUILayout.Button("Generate"))
                             {
@@ -267,7 +280,7 @@ namespace lisandroct.EventSystem
 
         private static IEnumerable<Type> LoadTypes()
         {
-            IEnumerable<string> assemblies = CompilationPipeline
+            var assemblies = CompilationPipeline
                 .GetAssemblies(AssembliesType.PlayerWithoutTestAssemblies)
                 .SelectMany(assembly => new[] {assembly.outputPath}.Concat(assembly.allReferences))
                 .Select(a => a.Replace('/', '\\').Split('\\').Last());
@@ -317,6 +330,20 @@ namespace lisandroct.EventSystem
             }
 
             return builder.ToString();
+        }
+
+        private static void AddDefaultEvents(Settings settings)
+        {
+            settings.Definitions.Add(new EventDefinition("Bool", typeof(bool)));
+            settings.Definitions.Add(new EventDefinition("Int", typeof(int)));
+            settings.Definitions.Add(new EventDefinition("Float", typeof(float)));
+            settings.Definitions.Add(new EventDefinition("String", typeof(string)));
+            settings.Definitions.Add(new EventDefinition("Vector2", typeof(Vector2)));
+            settings.Definitions.Add(new EventDefinition("Vector2Int", typeof(Vector2Int)));
+            settings.Definitions.Add(new EventDefinition("Vector3", typeof(Vector3)));
+            settings.Definitions.Add(new EventDefinition("Vector3Int", typeof(Vector3Int)));
+            settings.Definitions.Add(new EventDefinition("Vector4", typeof(Vector4)));
+            settings.Definitions.Add(new EventDefinition("Color", typeof(Color)));
         }
     }
 }

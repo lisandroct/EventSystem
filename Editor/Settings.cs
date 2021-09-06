@@ -13,14 +13,14 @@ namespace lisandroct.EventSystem
         private List<EventDefinition> definitions = new List<EventDefinition>();
         public List<EventDefinition> Definitions => definitions;
         
-        private static Settings GetOrCreateSettings()
+        private static bool GetOrCreateSettings(out Settings settings)
         {
             CoreFolders.Create();
 
             var path = $"{CoreFolders.SettingsPath}/{FileName}";
             
-            var settings = AssetDatabase.LoadAssetAtPath<Settings>(path);
-            if (settings != null) return settings;
+            settings = AssetDatabase.LoadAssetAtPath<Settings>(path);
+            if (settings != null) return true;
             
             settings = CreateInstance<Settings>();
             
@@ -41,6 +41,12 @@ namespace lisandroct.EventSystem
             return settings;
         }
 
-        internal static SerializedObject GetSerializedObject() => new SerializedObject(GetOrCreateSettings());
+        internal static bool GetSerializedObject(out SerializedObject serializedObject)
+        {
+            var existing = GetOrCreateSettings(out var settings);
+            serializedObject = new SerializedObject(settings);
+
+            return existing;
+        }
     }
 }
