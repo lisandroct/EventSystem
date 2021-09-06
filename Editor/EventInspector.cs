@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace lisandroct.EventSystem
@@ -39,7 +40,12 @@ namespace lisandroct.EventSystem
             
             Argument0Property = SerializedTestObject.FindProperty("argument0");
         }
-        
+
+        private void OnDisable()
+        {
+            DestroyImmediate(TestObject);
+        }
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -78,6 +84,11 @@ namespace lisandroct.EventSystem
             
             Argument0Property = SerializedTestObject.FindProperty("argument0");
             Argument1Property = SerializedTestObject.FindProperty("argument1");
+        }
+
+        private void OnDisable()
+        {
+            DestroyImmediate(TestObject);
         }
 
         public override void OnInspectorGUI()
@@ -121,6 +132,11 @@ namespace lisandroct.EventSystem
             Argument0Property = SerializedTestObject.FindProperty("argument0");
             Argument1Property = SerializedTestObject.FindProperty("argument1");
             Argument2Property = SerializedTestObject.FindProperty("argument2");
+        }
+
+        private void OnDisable()
+        {
+            DestroyImmediate(TestObject);
         }
         
         public override void OnInspectorGUI()
@@ -167,6 +183,11 @@ namespace lisandroct.EventSystem
             Argument1Property = SerializedTestObject.FindProperty("argument1");
             Argument2Property = SerializedTestObject.FindProperty("argument2");
             Argument3Property = SerializedTestObject.FindProperty("argument3");
+        }
+
+        private void OnDisable()
+        {
+            DestroyImmediate(TestObject);
         }
         
         public override void OnInspectorGUI()
