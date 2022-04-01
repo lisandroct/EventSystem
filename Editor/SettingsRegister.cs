@@ -18,8 +18,8 @@ namespace lisandroct.EventSystem
         
         private static string LibraryPath => $"{CoreFolders.CorePath}/{Library}";
         private static string EventsPath => $"{LibraryPath}/{Events}";
-        private static string TestsPath => $"{LibraryPath}/{Tests}";
         private static string EventsInspectorsPath => $"{EventsPath}/{Editor}";
+        private static string TestsPath => EventsInspectorsPath;
         private static string ListenersPath => $"{LibraryPath}/{Listeners}";
 
         [SettingsProvider]
